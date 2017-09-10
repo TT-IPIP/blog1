@@ -1,44 +1,686 @@
-extends base
 
-block title
-  title= page.title + ' | ' + config.title
+<!DOCTYPE html>
+<html  style="display: none;">
 
-block content
-  .post
-    h1.post-title= page.title
-    .post-meta= page.date.format('ll')
-      if page.categories.length > 0
-        span= ' | '
-        span.category
-          for category in page.categories.toArray()
-            a(href=url_for(category.path))= category.name
-      if theme.busuanzi == true
-        script(src='https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js', async)
-        span#busuanzi_container_page_pv= ' | '
-          span#busuanzi_value_page_pv
-          span= ' ' + __('Hits')
-    if theme.disqus
-      a.disqus-comment-count(data-disqus-identifier=page.path, href=url_for(page.path) + '#disqus_thread')
-    if theme.changyan
-      a.ds-thread-count(href=url_for(page.path) + '#SOHUCS')
-        span#changyan_count_unit(style='font-size: 15px; color: #6E7173;') 0
-        span= ' ' + __('Comment')
-      script(src='https://assets.changyan.sohu.com/upload/plugins/plugins.count.js', async)
-    if page.toc
-      div(class='clear')
-        div(id='toc' class='toc-article')
-          div(class='toc-title')= __('contents')
-          != toc(page.content, {list_number: theme.toc_number})
-    .post-content
-      != page.content
-    if theme.donate.enable == true
-      iframe(src='/donate/?AliPayQR=#{theme.donate.alipay_qr}&WeChatQR=#{theme.donate.wechat_qr}&GitHub=#{theme.donate.github}&BTCQR=#{theme.donate.btc_qr}&BTCKEY=#{theme.donate.btc_key}&PayPal=#{theme.donate.paypal_url}',style='overflow-x:hidden;overflow-y:hidden; border:0xp none #fff; min-height:240px; width:100%;',frameborder='0',scrolling='no')
-    if theme.shareto == true
-      script(type='text/javascript', src=url_for(theme.js) + '/share.js' + '?v=' + theme.version, async)
-      a.article-share-link(data-url='#{page.permalink}', data-id='#{page._id}', data-qrcode=qrcode(page.permalink))= __('shareto')
+  
+<head>
+  <script>
+    window.mduiVersion = "1.4.9"
+    window.oldVersion = [
+     '1.4.7',
+     '1.4.8',
+     '1.4.6',
+     'unknownVersion'
+    ]
+  </script>
+  <!--
+        © HEXO MDUI Theme
+        https://github.com/Halyul/hexo-theme-mdui
+        Version: 1.4.9 -->
+  <meta charset="UTF-8">
+  <title>MVC思想 - withstars</title>
 
-    include _partial/tag
-    include _partial/post_nav
+  <!-- Favicons -->
+  <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+  <link rel="icon" sizes="192x192" href="/img/favicon.png">
+  <link rel="apple-touch-icon" href="/img/favicon.png">
 
-    if page.comments
-      include _partial/comments
+  <!-- Meta & Info -->
+  <meta http-equiv="X-UA-Compatible">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  
+    <meta name="theme-color" content="
+  
+  #3F51B5
+  
+
+">
+  
+
+  <meta name="author" content="withstars">
+  
+  <meta name="keywords" content="blog, hexo, mdui">
+
+  <!--iOS -->
+  <meta name="apple-mobile-web-app-title" content="withstars">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="480">
+
+  <!-- Add to homescreen for Chrome on Android -->
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <!-- The Open Graph protocol -->
+  <meta property="og:url" content="http://zmys.tech">
+  <meta property="og:type" content="blog">
+  <meta property="og:title" content="MVC思想 - withstars | withstars">
+  <meta property="og:image" content="/img/favicon.png" />
+  
+
+    
+
+  <!-- Cache -->
+  <meta http-equiv="Cache-Control" content="max-age=7200" />
+  <meta http-equiv="Expires" content="Fri, 29 Dec 2017 23:00:00 GMT" />
+
+  
+
+  <script>
+    (function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(key){try{localStorage.removeItem(key)}catch(e){}};lsloader.setLS=function(key,val){try{localStorage.setItem(key,val)}catch(e){}};lsloader.getLS=function(key){var val="";try{val=localStorage.getItem(key)}catch(e){val=""}return val};versionString="/*"+(window.mduiVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var keys=[];for(var i=0;i<localStorage.length;i++){keys.push(localStorage.key(i))}keys.forEach(function(key){var data=lsloader.getLS(key);if(window.oldVersion){var remove=window.oldVersion.reduce(function(p,c){return p||data.indexOf(c)!==-1},false);if(remove){lsloader.removeLS(key)}}})}catch(e){}};lsloader.clean();lsloader.load=function(jsname,jspath,cssonload,isJs){if(typeof cssonload==="boolean"){isJs=cssonload;cssonload=undefined}isJs=isJs||false;cssonload=cssonload||function(){};var code;code=this.getLS(jsname);if(code&&code.indexOf(versionString)===-1){this.removeLS(jsname);this.requestResource(jsname,jspath,cssonload);return}if(code){var versionNumber=code.split(versionString)[0];if(versionNumber!=jspath){console.log("reload:"+jspath);this.removeLS(jsname);this.requestResource(jsname,jspath,cssonload);return}code=code.split(versionString)[1];if(isJs){this.jsRunSequence.push({name:jsname,code:code});this.runjs(jspath,jsname,code)}else{document.getElementById(jsname).appendChild(document.createTextNode(code));cssonload()}}else{this.requestResource(jsname,jspath,cssonload,isJs)}};lsloader.requestResource=function(name,path,cssonload,isJs){var that=this;if(isJs){this.iojs(path,name,function(path,name,code){that.setLS(name,path+versionString+code);that.runjs(path,name,code)})}else{this.iocss(path,name,function(code){document.getElementById(name).appendChild(document.createTextNode(code));that.setLS(name,path+versionString+code)},cssonload)}};lsloader.iojs=function(path,jsname,callback){var that=this;that.jsRunSequence.push({name:jsname,code:""});try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(path,jsname,xhr.response);return}}that.jsfallback(path,jsname)}};xhr.send(null)}catch(e){that.jsfallback(path,jsname)}};lsloader.iocss=function(path,jsname,callback,cssonload){var that=this;try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(xhr.response);cssonload();return}}that.cssfallback(path,jsname,cssonload)}};xhr.send(null)}catch(e){that.cssfallback(path,jsname,cssonload)}};lsloader.iofonts=function(path,jsname,callback,cssonload){var that=this;try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(xhr.response);cssonload();return}}that.cssfallback(path,jsname,cssonload)}};xhr.send(null)}catch(e){that.cssfallback(path,jsname,cssonload)}};lsloader.runjs=function(path,name,code){if(!!name&&!!code){for(var k in this.jsRunSequence){if(this.jsRunSequence[k].name==name){this.jsRunSequence[k].code=code}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var script=document.createElement("script");script.appendChild(document.createTextNode(this.jsRunSequence[0].code));script.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(script);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var that=this;var script=document.createElement("script");script.src=this.jsRunSequence[0].path;script.type="text/javascript";this.jsRunSequence[0].status="loading";script.onload=function(){that.jsRunSequence.shift();if(that.jsRunSequence.length>0){that.runjs()}};document.body.appendChild(script)}};lsloader.tagLoad=function(path,name){this.jsRunSequence.push({name:name,code:"",path:path,status:"failed"});this.runjs()};lsloader.jsfallback=function(path,name){if(!!this.jsnamemap[name]){return}else{this.jsnamemap[name]=name}for(var k in this.jsRunSequence){if(this.jsRunSequence[k].name==name){this.jsRunSequence[k].code="";this.jsRunSequence[k].status="failed";this.jsRunSequence[k].path=path}}this.runjs()};lsloader.cssfallback=function(path,name,cssonload){if(!!this.cssnamemap[name]){return}else{this.cssnamemap[name]=1}var link=document.createElement("link");link.type="text/css";link.href=path;link.rel="stylesheet";link.onload=link.onerror=cssonload;var root=document.getElementsByTagName("script")[0];root.parentNode.insertBefore(link,root)};lsloader.runInlineScript=function(scriptId,codeId){var code=document.getElementById(codeId).innerText;this.jsRunSequence.push({name:scriptId,code:code});this.runjs()};lsloader.loadCombo=function(jslist){var updateList="";var requestingModules={};for(var k in jslist){var LS=this.getLS(jslist[k].name);if(!!LS){var version=LS.split(versionString)[0];var code=LS.split(versionString)[1]}else{var version=""}if(version==jslist[k].path){this.jsRunSequence.push({name:jslist[k].name,code:code,path:jslist[k].path})}else{this.jsRunSequence.push({name:jslist[k].name,code:null,path:jslist[k].path,status:"comboloading"});requestingModules[jslist[k].name]=true;updateList+=(updateList==""?"":";")+jslist[k].path}}var that=this;if(!!updateList){var xhr=new XMLHttpRequest;xhr.open("get",combo+updateList,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){that.runCombo(xhr.response,requestingModules);return}}else{for(var i in that.jsRunSequence){if(requestingModules[that.jsRunSequence[i].name]){that.jsRunSequence[i].status="failed"}}that.runjs()}}};xhr.send(null)}this.runjs()};lsloader.runCombo=function(comboCode,requestingModules){comboCode=comboCode.split("/*combojs*/");comboCode.shift();for(var k in this.jsRunSequence){if(!!requestingModules[this.jsRunSequence[k].name]&&!!comboCode[0]){this.jsRunSequence[k].status="comboJS";this.jsRunSequence[k].code=comboCode[0];this.setLS(this.jsRunSequence[k].name,this.jsRunSequence[k].path+versionString+comboCode[0]);comboCode.shift()}}this.runjs()}})();
+  </script>
+
+  <!-- Import CSS -->
+  
+    <link rel="stylesheet" href="/css/fonts.min.css">
+  
+  
+    
+      <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/css/style-now.min.css?EXliK5rE3ppYXWmnAfU7UQ==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+    
+  
+
+  <!-- Custom Head -->
+  
+
+  
+    <style>
+      body {
+        background-color: #eeeeee;
+      }
+    </style>
+  
+
+  
+</head>
+
+
+
+
+  
+    
+  <body class="mdui-theme-primary-indigo mdui-theme-accent-blue
+   
+  
+    mdui-appbar-with-toolbar
+  
+  " >
+
+
+  
+
+
+<div id="top"></div>
+
+
+  
+
+  <div class="mdui-appbar mdui-shadow-0 mdui-appbar-fixed animate-appbar" id="blog-appbar">
+    <div class="mdui-toolbar mdui-color-theme">
+      <button class="mdui-btn mdui-ripple mdui-btn-icon drawer-button" mdui-drawer="{target: '#drawer'}">
+        <i class="mdui-icon">
+          <span></span>
+        </i>
+      </button>
+      
+        <a href="/" class="mdui-typo-headline">
+          Title
+        </a>
+      
+      
+      
+        <div class="flex-spacer"></div>
+      
+      
+      
+
+    </div>
+  </div>
+
+
+  <div id="search-cover" searchResult onclick="closeSearch()"></div>
+
+
+
+
+
+
+  
+  <div class="mdui-drawer mdui-drawer-full-height mdui-drawer-close
+  " id="drawer" style="z-index: 2001;">
+  <div class="userview" style="background-image: url(/img/bg.png)">
+  <div class="overlay">
+    <img class="mdui-img-circle avatar" src="/img/avatar.png"/>
+    <div class="bottom">
+      <div class="info">
+        <div class="author mdui-text-color-white-text">
+          withstars
+        </div>
+        <div class="slogan mdui-text-color-white-secondary">
+          I&#39;m your slogan!
+        </div>
+      </div>
+      <div class="flex-spacer"></div>
+      
+    </div>
+  </div>
+</div>
+
+  <div class="content">
+  <div class="hexo">
+    
+      <div class="mdui-list no-padding-bottom">
+        <a href="/">
+          <li class="mdui-list-item mdui-ripple">
+            <i class="mdui-list-item-icon mdui-icon material-icons">&#xe88a;</i>
+            <div class="mdui-list-item-content">
+              Index
+            </div>
+          </li>
+        </a>
+      </div>
+    
+    
+      <div class="mdui-list no-padding">
+        <a href="/archives">
+          <li class="mdui-list-item mdui-ripple">
+            <i class="mdui-list-item-icon mdui-icon material-icons">&#xe149;</i>
+            <div class="mdui-list-item-content">
+              Archives
+              <span class="badge new mdui-color-theme-accent" data-badge-caption="">2</span>
+            </div>
+          </li>
+        </a>
+      </div>
+    
+    
+      <div class="mdui-list no-padding-top" mdui-collapse="{accordion: true}" mdui-collapse>
+        
+        
+        <div class="mdui-collapse-item ">
+          <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+            <i class="mdui-list-item-icon mdui-icon material-icons">&#xe916;</i>
+            <div class="mdui-list-item-content">Years</div>
+            <i class="mdui-collapse-item-arrow mdui-icon material-icons">&#xe5c5;</i>
+          </div>
+          <div class="mdui-collapse-item-body mdui-list">
+            
+            
+              <a href="/archives/2017/" class="mdui-list-item mdui-ripple">
+                2017
+              </a>
+            
+          </div>
+        </div>
+      </div>
+    
+  </div>
+  
+</div>
+
+  <div class="flex-spacer"></div>
+  <div class="drawer-footer">
+  <div class="mdui-typo mdui-typo-caption-opacity">
+    Powered by <a href="http://hexo.io">Hexo</a>
+    <br />
+    Theme - <a href="//github.com/Halyul/hexo-theme-mdui">Halyul/MDUI</a>
+    <br />
+    <span>
+      Copyright ©
+      <span year></span>
+      withstars
+    </span>
+    
+    
+  </div>
+</div>
+<script type="text/javascript">
+  var copyrightNow = new Date().getFullYear();
+  var textContent = document.querySelector('span[year]')
+  
+    textContent.textContent = copyrightNow
+  
+</script>
+
+</div>
+
+
+
+
+
+
+
+<main>
+  
+
+
+  <style id="post_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("post_css","/css/src/now/post.min.css?FQz5X8PWcn8W571PmDi/2w==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+<style id="lightgallery_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("lightgallery_css","/css/src/lightgallery.min.css?k96yraexoRn3+CTmPycWNA==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+
+<style>
+  .lg-outer .lg-item {
+    background-image: url("/img/loading.gif");
+  }
+</style>
+<div class="post-warpper animate-post">
+  <div class="post-bg-color
+    
+      
+        mdui-color-theme
+      
+    
+  "></div>
+  <div class="post-header
+    
+      
+        mdui-color-theme
+      
+    
+  ">
+    <div class="post-header-container">
+      <div class="post-title mdui-text-truncate">MVC思想</div>
+      <div class="post-actions mdui-valign">
+        <div>
+          <span>Posted: </span>
+          <span style="float: right">Sep 10, 2017</span>
+          
+        </div>
+        
+
+        
+
+      </div>
+    </div>
+  </div>
+  <div class="post-container flex-spacer
+  
+  ">
+    <div class="post-adjust">
+      <div class="mdui-card card-bottom-fix menu-fix mdui-hoverable" id="blog-post">
+        <div class="warning">
+          This article was last modified
+          <span id="content-warning"></span>
+          days ago.
+          The content of this post may be outdated!
+        </div>
+        
+        
+          <div class="mdui-card-media">
+            <img src="/img/random/picHD_6.png"/>
+          </div>
+        
+        <div class="post-content mdui-typo no-margin" id="post-content">
+          <p>MVC是一种设计模式（Design pattern），也就是一种解决问题的方法和思路， 是上世纪80年代提出的，到现在已经颇有历史了。 MVC的意义在于指导开发者将数据与表现解耦，提高代码，特别是模型部分代码的复用性。</p>
+<p>MVC不仅仅存在于Web设计中，在桌面程序开发中也是一种常见的方法。MVC的出现已经有一段历史了。 记得我最早了解到MVC的时候，是在Microsoft的Visual C++ 中的MFC中。 当时年少无知，以为是MFC中特有的东西。后来随之不断学习，才发现自己的天真。 所以说，学得越多，就越觉得自己无知。越觉得自己无知，就越懂得敬畏和谦逊。 从这个角度讲，同学们，最好不要看不起谦逊的人。</p>
+<p>有个这么一个段子，说一天A君在圈内聚会时，朋友介绍了另一个人B君互相认识。 聚会场合嘛，这很正常，也很普遍。于是AB君小聊了一下。按国人的习惯，A君就问了“先生在哪高就？”。 B君只说了句，“谈不上高就，炒炒股。” “哦，原来是炒股的。”A君心想，虽没觉得什么不对，但心理觉得B有点low，只是没说破，也没表现出来。 过后了一段时间，一次偶然机会，发现原来B君是国内某上市公司的二股东，身家过亿。 人家没说慌，确实是炒股的……</p>
+<p>话说远了，我们还说正题。MVC是三个单词的缩写：Model, View, Controller。 MVC是一种设计模式，目前几乎所有的Web开发框架都建立在MVC模式之上。 当然，最近几年也出现了一些诸如MVP, MVVM之类的新的设计模式。 但从技术的成熟程度和使用的广泛程度来讲，MVC仍是主流。</p>
+<p>Yii是一个Web框架，从Web开发的分工来讲，Yii的开发工作中，承担后端的内容多一些，毕竟主要就是PHP开发。 前端主要是在HTML、JavaScript、CSS上进行开发，然后通过Yii把前端的内容管起来，如通过Assets等。 这一章要讲的MVC，主要是针对后端的。 前端的MVC严格来讲不属于Yii的范畴，这里我们就不作过多介绍。 如果想了解前端的MVC，可以看看Backbone.js Angular.js等前端框架。</p>
+<h3 id="MVC的三要素"><a href="#MVC的三要素" class="headerlink" title="MVC的三要素"></a>MVC的三要素</h3><p>MVC是模型(Model)、视图(View)、控制器(Controller)3个单词的缩写。 下面我们从这3个方面来讲解MVC中的三个要素。</p>
+<p>Model是指数据模型，是对客观事物的抽象。 如一篇博客文章，我们可能会以一个Post类来表示，那么，这个Post类就是数据对象。 同时，博客文章还有一些业务逻辑，如发布、回收、评论等，这一般表现为类的方法，这也是model的内容和范畴。 对于Model，主要是数据、业务逻辑和业务规则。相对而言，这是MVC中比较稳定的部分，一般成品后不会改变。 开发初期的最重要任务，主要也是实现Model的部分。这一部分写得好，后面就可以改得少，开发起来就快。<br>View是指视图，也就是呈现给用户的一个界面，是model的具体表现形式，也是收集用户输入的地方。 如你在某个博客上看到的某一篇文章，就是某个Post类的表现形式。 View的目的在于提供与用户交互的界面。换句话说，对于用户而言，只有View是可见的、可操作的。 事实上也是如此，你不会让用户看到Model，更不会让他直接操作Model。 你只会让用户看到你想让他看的内容。 这就是View要做的事，他往往是MVC中变化频繁的部分，也是客户经常要求改来改去的地方。 今天你可能会以一种形式来展示你的博文，明天可能就变成别的表现形式了。<br>Contorller指的是控制器，主要负责与model和view打交道。 换句话说，model和view之间一般不直接打交道，他们老死不相往来。view中不会对model作任何操作， model不会输出任何用于表现的东西，如HTML代码等。这俩甩手不干了，那总得有人来干吧，只能Controller上了。 Contorller用于决定使用哪些Model，对Model执行什么操作，为视图准备哪些数据，是MVC中沟通的桥梁。<br>对于MVC中三者的划分并没有十分明晰的定义和界线。MVC设计模式只是一种指导思想， 让你按照model, view, controller三个方面来描述你的应用，并通过三者的交互，使应用功能得以正常运转。</p>
+<p>其中，View的部分比较明确，就是负责显示嘛。一切与显示界面无关的东西，都不应该出现在View里面。 因此，View中一般不会出现复杂的判断语句，不会出现复杂的运算过程。 对于PHP的Web应用而言，毫无疑问，HTML是View中的主要内容。这是关于View的几个原则：</p>
+<p>负责显示界面，以HTML为主；<br>一般没有复杂的判断语句或运算过程，可以有简单的循环语句、格式化语句。 比如，一般博客首页的文章列表，就是一种循环结构；<br>从不调用Model的写方法。也就是说，View只从Model获取数据，而不直接改写Model，所以我们说他们老死不相往来。<br>一般没有任何准备数据的代码，如查询数据库、组合成一定格式的字符串等。 这些一般放在Controller里面，并以变量的形式传给视图。 也就是说，视图里面要用到的数据，都是拿来就能直接用的变量。<br>对于Model而言，最主要就是保存事物的信息，表征事物的行为和对他可以进行的操作。 比如，Post类必然有一个用于保存博客文章标题的title属性，必然有一个删除的操作，这都是Model的内容。 以下是关于Model的几个原则：</p>
+<p>数据、行为、方法是Model的主要内容；<br>实际工作中，Model是MVC中代码量最大，逻辑最复杂的地方，因为关于应用的大量的业务逻辑也要在这里面表示。<br>Model所提供的数据都是原始数据。也就是说，不带有任何表现层的代码。 比如，一般不会在输出的数据中添加HTML标签，这是View的工作。 但是Model可以提供有结构的数据，数组结构、队列结构、乃至其他Model等。 这个结构并非是表现层的格式，而是数据在内存中的表现。<br>与输出不同，Model的输入数据，可以是带有表现格式的数据。 如将一篇文章保存到Post里面，内容中必然包含各种HTML标签。 因此，Model一般要对输入数据作过滤、验证和规范化等预处理。 特别是对于需要保存进数据库的，一定要对所有的输入数据作预处理。 这些预处理，有的其实是业务逻辑。比如只有主编才可以删除文章，这一验证规则既也是业务逻辑，也是权限控制。 而有些预处理，则不属于业务逻辑，比如，文章标题前后的空格应去除。<br>注意与Controller区分开。Model是处理业务方面的逻辑，Controller只是简单的协调Model和View之间的关系， 只要是与业务有关的，就该放在Model里面。好的设计，应当是胖Model，瘦Controller。<br>对于Controller，主要是响应用户请求，决定使用什么视图，需要准备什么数据用来显示。 以下是有关Controller的设计原则：</p>
+<p>用于处理用户请求。 因此，对于reqeust的访问代码应该放在Controller里面，比如 $_GET $_POST等。 但仅限于获取用户请求数据，不应该对数据有任何操作或预处理，这些工作应该交由Models来完成。<br>调用Models的读方法，获取数据，直接传递给视图，供显示。 当涉及到多个Model时，有关的逻辑应当交给Model来完成。<br>调用Models的类方法，对Models进行写操作。<br>调用视图渲染函数等，形成对用户Reqeust的Response。<br>Model设计参考<br>在MVC中，Model排第一，是有一定暗示的。一是Model是整个架构中，代码量最大，复用程度最高， 也是最体现程序员设计功力的地方。 二是View和Controller相对于Model而言，在实际开发中，复用程度不高，逻辑复杂程度较低。 可以说，Model设计得好，整个MVC就好，应用开发起就顺。</p>
+<p>因此，这一节将以Model为核心，来讲MVC的设计。 实话说，MVC尽管提出了Model View Controller的划分思想，但到了具体实操中，并不是很好把握的。 下面介绍的设计参考，也仅仅是个人在实际项目中的一些体会和想法，仅作参考。 在具体设计中，可以后把握这么几点：</p>
+<p>Model应当集中整个应用的数据和业务逻辑</p>
+<p>应用当中涉及到的所有业务对象都应尽可能抽像成Model。 如，博客系统当中，文章要抽象成Post，评论要抽象成Comment。 而相关的业务逻辑，如发布新文章可以用 Post::create() ，删除评论可以用 Comment::delete() 。 这样子整个应用就显得很清晰明了。</p>
+<p>基础Model应当尽可能细化</p>
+<p>在一个应用中，特别是对于大型复杂应用，Model间关系可能比较复杂。在构造应用时，特别是基础Model时， 要从足够小的粒度来设计。 此时，就要考虑采取继承、封装等措施了。 比如，一个博客文章Post，一般包含了若干标签，在页上一般写在作者、日期等Post字段的旁边。 从逻辑上来看，把标签作为Post的一个属性，是说得通的。 但是如果把标签作为一个属性像标题、正文等字段一样依附于Post。那么在有的功能上，实现起来是有难度的。 比如，客户要求，当一个Post含有标签 “yii, model” 时，可以点击 “yii” ， 然后系统列出所有具标签中含有 “yii” 的文章。</p>
+<p>为了实现这个功能，正确的设计是单独将标签抽象成Tag。这样，Post和Tag是多对多的关系， 即一个Post有多个Tag，一个Tag也对应多个Post。这个多对多关系可以通过一张数据表 tbl_post_tag 来表示。 接下来，为Post增加 Post::getTags() 方法，并通过 tbl_post_tag 表来查询当前Post的所有标签。 同时，为Tag增加 Tag::getPosts() 方法，也通过 tbl_post_tag 表来查询当前Tag对应的文章。 这样，就具备了实现客户要求的新功能的基础。</p>
+<p>因此，在Model设计上，要以尽量小的粒度进行设计。一般而言，粒度越小，复用的可能性就越高。</p>
+<p>有的读者可能会问了，既然要求粒度尽可能地小，那么，Post是不是也应当再细化，把段落抽象为Model？ 是否有这个必要，看客户需求。一般情况确实没有这必要，如果这么做，那是不是再以句子为单位进行抽象？ 但如果客户要求这个博客系统的评论是针对段落进行的评论的， 要将评论显示在对应的段落旁边，甚至显示每个段落评论人次等功能。那么就需要把段落抽象成Model了。</p>
+<h3 id="分层次设计Model"><a href="#分层次设计Model" class="headerlink" title="分层次设计Model"></a>分层次设计Model</h3><p>从设计流程上，数据库结构设计与Model的设计是紧密相关的。先有数据库结构设计，后有Model设计。 在设计数据库结构的时候，也是在设计Model。 一般而言，最单元、粒度最小的Model就是根据每个数据库表所生成的Model，这往往是个Active Record。</p>
+<p>比如标签的问题，在数据库存储过程中，Post和Tag是分开存的，而且这两个表的字段，没有冗余。 tbl_post_tag 表也只记录他们的ID，没有实质内容。</p>
+<p>在获取数据渲染视图，向用户展现时，这两个Model及他们的字段，是完全够用，且没有冗余的。</p>
+<p>那么，能不能说 Post 和 Tag 这两个Model是够用的呢？显然还不够。</p>
+<p>当用户在创建文章、修改文章、审核文章时，需要采用一个表单来显示来收集用户输入。 其中，对于标签的采集，一般是一个长条的文本框，让用户一次性输入多个标签，并以 , 等进行分隔的。</p>
+<p>但是，这个文本框没有一个字段与之进行对应。我们也没办法对这个字段的用户输入进行任何的验证、预处理。</p>
+<p>因此，Post的功能是不够用的。不够用怎么办？那就加吧。但直接在 Post 里面加个 public $tagString 并不好。 毕竟只是在使用表单时，才会有这个问题，其他场合，这个字段是没用的。</p>
+<p>这种情况下，一般使用继承:<br>public class PostForm extends Post<br>{<br>    public $tagString;</p>
+<pre><code>... ...
+</code></pre><p>}<br>这样，当控制器发现用户在创建、修改、审核文章时，可以使用 PostForm Model来渲染视图了， 而其他场合则仍使用Post。这样就在需要时，增加了一个 tagString 的字段用于收集用户输入的标签。</p>
+<p>在具体设计过程中，由于Model本身就会包含很多代码，因此，要多使用这继承等手段，把代码组织好。</p>
+<p>仔细为Model方法命名</p>
+<p>由于Model的代码量比较大，又集中了大量的逻辑，因此，会在一个Model中有大量的方法。仍然以Post为例， 会涉及到创建、审核、发布、回收等流程，相关的方法比较多，在命名上要用心。 可能会涉及到的、名字又比较接近的方法就有：</p>
+<p>getPrevPost()，前一篇文章，用于导航<br>getNextPost()，下一篇文章，用于导航<br>getRelatedPosts($n = 10)，获取相关的N篇文章，用于相关文章推荐列表<br>getPostsOfAuthor($n = 10)，获取同一作者的N篇相关文章，用于作者文章列表<br>getLatestPosts($n = 10)，最新的N篇文章，静态方法，用于文章列表或RSS输出<br>getHotestPosts($n = 10)，最热门的N篇文章，静态方法，用于热门文章列表<br>getPublishPosts($n = -1)，获取已经发布的N篇文章，静态方法，用于文章列表<br>getDraftPosts($n = -1)，获取未发布的N篇文章，静态方法，用于作者页面<br>这里只是一些获取其他Post的方法，命名比较合理，一看就知道意思。 而且全部写成getter的形式，可以使用读取属性的方式进行访问。</p>
+<p>不单单是在Model方法的命名上要用心， 在变量名、类名、方法名等的命名上，也要养成习惯，形成规律。 不要图一时之快，胡乱起名。否则，出来混，迟早要还的。</p>
+<p>MVC与前后端的配合<br>从MVC的起源来讲，是从桌面应用的开发中发展起来的。从本质来讲，这是一种解决问题的思路和办法。 从实践来讲，这是一种久经考验的有效方式。但是如开头我们讲的，Yii更多的是侧重于后端。 对于Web应用而言，包含Yii在内的许多Web开发框架，都是没有办法知道用户的操作，如鼠标、键盘等操作的。 Web应用想要了解用户的操作，只能依靠用户发送Request。 而对于鼠标、键盘等的响应，只能依靠前端技术，如JavaScript等来实现。</p>
+<p>再加上这几年来Web浏览器的功能日臻强大。因此，Web应用开发出现了一个新的发展苗头，就是功能从后端往前端转移。</p>
+<p>在前端，通过JavaScript捕获用户操作，进行相应处理。 或是发送回后端获取响应后处理，如通过ajax请求后端数据，实现无刷新的局部页面更新，向用户进行反馈； 或直接在前端由浏览器进行处理，如使用backbone.js、Angular.js等前端框架的数据绑定功能等。 这些都使得Web应用表现得越来越像桌面应用。</p>
+<p>后端MVC也在为前后端的发展而改变。 Controller的功能更多的变成了识别是ajax请求还是普通请求， 并根据请求的不同采取相应的视图渲染方式。对于普通请求，正常渲染视图，输出HTML。 对于ajax请求，则返回局部渲染视图，输出HTML片段。有的甚至输出XML或者JSON。 唯一在大潮流中，巍然不动的，还是我们的大Model。</p>
+<p>MVC是一种设计模式（Design pattern），也就是一种解决问题的方法和思路， 是上世纪80年代提出的，到现在已经颇有历史了。 MVC的意义在于指导开发者将数据与表现解耦，提高代码，特别是模型部分代码的复用性。</p>
+<p>MVC不仅仅存在于Web设计中，在桌面程序开发中也是一种常见的方法。MVC的出现已经有一段历史了。 记得我最早了解到MVC的时候，是在Microsoft的Visual C++ 中的MFC中。 当时年少无知，以为是MFC中特有的东西。后来随之不断学习，才发现自己的天真。 所以说，学得越多，就越觉得自己无知。越觉得自己无知，就越懂得敬畏和谦逊。 从这个角度讲，同学们，最好不要看不起谦逊的人。</p>
+<p>有个这么一个段子，说一天A君在圈内聚会时，朋友介绍了另一个人B君互相认识。 聚会场合嘛，这很正常，也很普遍。于是AB君小聊了一下。按国人的习惯，A君就问了“先生在哪高就？”。 B君只说了句，“谈不上高就，炒炒股。” “哦，原来是炒股的。”A君心想，虽没觉得什么不对，但心理觉得B有点low，只是没说破，也没表现出来。 过后了一段时间，一次偶然机会，发现原来B君是国内某上市公司的二股东，身家过亿。 人家没说慌，确实是炒股的……</p>
+<p>话说远了，我们还说正题。MVC是三个单词的缩写：Model, View, Controller。 MVC是一种设计模式，目前几乎所有的Web开发框架都建立在MVC模式之上。 当然，最近几年也出现了一些诸如MVP, MVVM之类的新的设计模式。 但从技术的成熟程度和使用的广泛程度来讲，MVC仍是主流。</p>
+<p>Yii是一个Web框架，从Web开发的分工来讲，Yii的开发工作中，承担后端的内容多一些，毕竟主要就是PHP开发。 前端主要是在HTML、JavaScript、CSS上进行开发，然后通过Yii把前端的内容管起来，如通过Assets等。 这一章要讲的MVC，主要是针对后端的。 前端的MVC严格来讲不属于Yii的范畴，这里我们就不作过多介绍。 如果想了解前端的MVC，可以看看Backbone.js Angular.js等前端框架。</p>
+<p>MVC的三要素<br>MVC是模型(Model)、视图(View)、控制器(Controller)3个单词的缩写。 下面我们从这3个方面来讲解MVC中的三个要素。</p>
+<p>Model是指数据模型，是对客观事物的抽象。 如一篇博客文章，我们可能会以一个Post类来表示，那么，这个Post类就是数据对象。 同时，博客文章还有一些业务逻辑，如发布、回收、评论等，这一般表现为类的方法，这也是model的内容和范畴。 对于Model，主要是数据、业务逻辑和业务规则。相对而言，这是MVC中比较稳定的部分，一般成品后不会改变。 开发初期的最重要任务，主要也是实现Model的部分。这一部分写得好，后面就可以改得少，开发起来就快。<br>View是指视图，也就是呈现给用户的一个界面，是model的具体表现形式，也是收集用户输入的地方。 如你在某个博客上看到的某一篇文章，就是某个Post类的表现形式。 View的目的在于提供与用户交互的界面。换句话说，对于用户而言，只有View是可见的、可操作的。 事实上也是如此，你不会让用户看到Model，更不会让他直接操作Model。 你只会让用户看到你想让他看的内容。 这就是View要做的事，他往往是MVC中变化频繁的部分，也是客户经常要求改来改去的地方。 今天你可能会以一种形式来展示你的博文，明天可能就变成别的表现形式了。<br>Contorller指的是控制器，主要负责与model和view打交道。 换句话说，model和view之间一般不直接打交道，他们老死不相往来。view中不会对model作任何操作， model不会输出任何用于表现的东西，如HTML代码等。这俩甩手不干了，那总得有人来干吧，只能Controller上了。 Contorller用于决定使用哪些Model，对Model执行什么操作，为视图准备哪些数据，是MVC中沟通的桥梁。<br>对于MVC中三者的划分并没有十分明晰的定义和界线。MVC设计模式只是一种指导思想， 让你按照model, view, controller三个方面来描述你的应用，并通过三者的交互，使应用功能得以正常运转。</p>
+<p>其中，View的部分比较明确，就是负责显示嘛。一切与显示界面无关的东西，都不应该出现在View里面。 因此，View中一般不会出现复杂的判断语句，不会出现复杂的运算过程。 对于PHP的Web应用而言，毫无疑问，HTML是View中的主要内容。这是关于View的几个原则：</p>
+<p>负责显示界面，以HTML为主；<br>一般没有复杂的判断语句或运算过程，可以有简单的循环语句、格式化语句。 比如，一般博客首页的文章列表，就是一种循环结构；<br>从不调用Model的写方法。也就是说，View只从Model获取数据，而不直接改写Model，所以我们说他们老死不相往来。<br>一般没有任何准备数据的代码，如查询数据库、组合成一定格式的字符串等。 这些一般放在Controller里面，并以变量的形式传给视图。 也就是说，视图里面要用到的数据，都是拿来就能直接用的变量。<br>对于Model而言，最主要就是保存事物的信息，表征事物的行为和对他可以进行的操作。 比如，Post类必然有一个用于保存博客文章标题的title属性，必然有一个删除的操作，这都是Model的内容。 以下是关于Model的几个原则：</p>
+<p>数据、行为、方法是Model的主要内容；<br>实际工作中，Model是MVC中代码量最大，逻辑最复杂的地方，因为关于应用的大量的业务逻辑也要在这里面表示。<br>Model所提供的数据都是原始数据。也就是说，不带有任何表现层的代码。 比如，一般不会在输出的数据中添加HTML标签，这是View的工作。 但是Model可以提供有结构的数据，数组结构、队列结构、乃至其他Model等。 这个结构并非是表现层的格式，而是数据在内存中的表现。<br>与输出不同，Model的输入数据，可以是带有表现格式的数据。 如将一篇文章保存到Post里面，内容中必然包含各种HTML标签。 因此，Model一般要对输入数据作过滤、验证和规范化等预处理。 特别是对于需要保存进数据库的，一定要对所有的输入数据作预处理。 这些预处理，有的其实是业务逻辑。比如只有主编才可以删除文章，这一验证规则既也是业务逻辑，也是权限控制。 而有些预处理，则不属于业务逻辑，比如，文章标题前后的空格应去除。<br>注意与Controller区分开。Model是处理业务方面的逻辑，Controller只是简单的协调Model和View之间的关系， 只要是与业务有关的，就该放在Model里面。好的设计，应当是胖Model，瘦Controller。<br>对于Controller，主要是响应用户请求，决定使用什么视图，需要准备什么数据用来显示。 以下是有关Controller的设计原则：</p>
+<p>用于处理用户请求。 因此，对于reqeust的访问代码应该放在Controller里面，比如 $_GET $_POST等。 但仅限于获取用户请求数据，不应该对数据有任何操作或预处理，这些工作应该交由Models来完成。<br>调用Models的读方法，获取数据，直接传递给视图，供显示。 当涉及到多个Model时，有关的逻辑应当交给Model来完成。<br>调用Models的类方法，对Models进行写操作。<br>调用视图渲染函数等，形成对用户Reqeust的Response。<br>Model设计参考<br>在MVC中，Model排第一，是有一定暗示的。一是Model是整个架构中，代码量最大，复用程度最高， 也是最体现程序员设计功力的地方。 二是View和Controller相对于Model而言，在实际开发中，复用程度不高，逻辑复杂程度较低。 可以说，Model设计得好，整个MVC就好，应用开发起就顺。</p>
+<p>因此，这一节将以Model为核心，来讲MVC的设计。 实话说，MVC尽管提出了Model View Controller的划分思想，但到了具体实操中，并不是很好把握的。 下面介绍的设计参考，也仅仅是个人在实际项目中的一些体会和想法，仅作参考。 在具体设计中，可以后把握这么几点：</p>
+<p>Model应当集中整个应用的数据和业务逻辑</p>
+<p>应用当中涉及到的所有业务对象都应尽可能抽像成Model。 如，博客系统当中，文章要抽象成Post，评论要抽象成Comment。 而相关的业务逻辑，如发布新文章可以用 Post::create() ，删除评论可以用 Comment::delete() 。 这样子整个应用就显得很清晰明了。</p>
+<p>基础Model应当尽可能细化</p>
+<p>在一个应用中，特别是对于大型复杂应用，Model间关系可能比较复杂。在构造应用时，特别是基础Model时， 要从足够小的粒度来设计。 此时，就要考虑采取继承、封装等措施了。 比如，一个博客文章Post，一般包含了若干标签，在页上一般写在作者、日期等Post字段的旁边。 从逻辑上来看，把标签作为Post的一个属性，是说得通的。 但是如果把标签作为一个属性像标题、正文等字段一样依附于Post。那么在有的功能上，实现起来是有难度的。 比如，客户要求，当一个Post含有标签 “yii, model” 时，可以点击 “yii” ， 然后系统列出所有具标签中含有 “yii” 的文章。</p>
+<p>为了实现这个功能，正确的设计是单独将标签抽象成Tag。这样，Post和Tag是多对多的关系， 即一个Post有多个Tag，一个Tag也对应多个Post。这个多对多关系可以通过一张数据表 tbl_post_tag 来表示。 接下来，为Post增加 Post::getTags() 方法，并通过 tbl_post_tag 表来查询当前Post的所有标签。 同时，为Tag增加 Tag::getPosts() 方法，也通过 tbl_post_tag 表来查询当前Tag对应的文章。 这样，就具备了实现客户要求的新功能的基础。</p>
+<p>因此，在Model设计上，要以尽量小的粒度进行设计。一般而言，粒度越小，复用的可能性就越高。</p>
+<p>有的读者可能会问了，既然要求粒度尽可能地小，那么，Post是不是也应当再细化，把段落抽象为Model？ 是否有这个必要，看客户需求。一般情况确实没有这必要，如果这么做，那是不是再以句子为单位进行抽象？ 但如果客户要求这个博客系统的评论是针对段落进行的评论的， 要将评论显示在对应的段落旁边，甚至显示每个段落评论人次等功能。那么就需要把段落抽象成Model了。</p>
+<p>分层次设计Model</p>
+<p>从设计流程上，数据库结构设计与Model的设计是紧密相关的。先有数据库结构设计，后有Model设计。 在设计数据库结构的时候，也是在设计Model。 一般而言，最单元、粒度最小的Model就是根据每个数据库表所生成的Model，这往往是个Active Record。</p>
+<p>比如标签的问题，在数据库存储过程中，Post和Tag是分开存的，而且这两个表的字段，没有冗余。 tbl_post_tag 表也只记录他们的ID，没有实质内容。</p>
+<p>在获取数据渲染视图，向用户展现时，这两个Model及他们的字段，是完全够用，且没有冗余的。</p>
+<p>那么，能不能说 Post 和 Tag 这两个Model是够用的呢？显然还不够。</p>
+<p>当用户在创建文章、修改文章、审核文章时，需要采用一个表单来显示来收集用户输入。 其中，对于标签的采集，一般是一个长条的文本框，让用户一次性输入多个标签，并以 , 等进行分隔的。</p>
+<p>但是，这个文本框没有一个字段与之进行对应。我们也没办法对这个字段的用户输入进行任何的验证、预处理。</p>
+<p>因此，Post的功能是不够用的。不够用怎么办？那就加吧。但直接在 Post 里面加个 public $tagString 并不好。 毕竟只是在使用表单时，才会有这个问题，其他场合，这个字段是没用的。</p>
+<p>这种情况下，一般使用继承:</p>
+<p>1<br>2<br>3<br>4<br>5<br>6<br>public class PostForm extends Post<br>{<br>    public $tagString;</p>
+<pre><code>... ...
+</code></pre><p>}<br>这样，当控制器发现用户在创建、修改、审核文章时，可以使用 PostForm Model来渲染视图了， 而其他场合则仍使用Post。这样就在需要时，增加了一个 tagString 的字段用于收集用户输入的标签。</p>
+<p>在具体设计过程中，由于Model本身就会包含很多代码，因此，要多使用这继承等手段，把代码组织好。</p>
+<p>仔细为Model方法命名</p>
+<p>由于Model的代码量比较大，又集中了大量的逻辑，因此，会在一个Model中有大量的方法。仍然以Post为例， 会涉及到创建、审核、发布、回收等流程，相关的方法比较多，在命名上要用心。 可能会涉及到的、名字又比较接近的方法就有：</p>
+<p>getPrevPost()，前一篇文章，用于导航<br>getNextPost()，下一篇文章，用于导航<br>getRelatedPosts($n = 10)，获取相关的N篇文章，用于相关文章推荐列表<br>getPostsOfAuthor($n = 10)，获取同一作者的N篇相关文章，用于作者文章列表<br>getLatestPosts($n = 10)，最新的N篇文章，静态方法，用于文章列表或RSS输出<br>getHotestPosts($n = 10)，最热门的N篇文章，静态方法，用于热门文章列表<br>getPublishPosts($n = -1)，获取已经发布的N篇文章，静态方法，用于文章列表<br>getDraftPosts($n = -1)，获取未发布的N篇文章，静态方法，用于作者页面<br>这里只是一些获取其他Post的方法，命名比较合理，一看就知道意思。 而且全部写成getter的形式，可以使用读取属性的方式进行访问。</p>
+<p>不单单是在Model方法的命名上要用心， 在变量名、类名、方法名等的命名上，也要养成习惯，形成规律。 不要图一时之快，胡乱起名。否则，出来混，迟早要还的。</p>
+<p>MVC与前后端的配合<br>从MVC的起源来讲，是从桌面应用的开发中发展起来的。从本质来讲，这是一种解决问题的思路和办法。 从实践来讲，这是一种久经考验的有效方式。但是如开头我们讲的，Yii更多的是侧重于后端。 对于Web应用而言，包含Yii在内的许多Web开发框架，都是没有办法知道用户的操作，如鼠标、键盘等操作的。 Web应用想要了解用户的操作，只能依靠用户发送Request。 而对于鼠标、键盘等的响应，只能依靠前端技术，如JavaScript等来实现。</p>
+<p>再加上这几年来Web浏览器的功能日臻强大。因此，Web应用开发出现了一个新的发展苗头，就是功能从后端往前端转移。</p>
+<p>在前端，通过JavaScript捕获用户操作，进行相应处理。 或是发送回后端获取响应后处理，如通过ajax请求后端数据，实现无刷新的局部页面更新，向用户进行反馈； 或直接在前端由浏览器进行处理，如使用backbone.js、Angular.js等前端框架的数据绑定功能等。 这些都使得Web应用表现得越来越像桌面应用。</p>
+<p>后端MVC也在为前后端的发展而改变。 Controller的功能更多的变成了识别是ajax请求还是普通请求， 并根据请求的不同采取相应的视图渲染方式。对于普通请求，正常渲染视图，输出HTML。 对于ajax请求，则返回局部渲染视图，输出HTML片段。有的甚至输出XML或者JSON。 唯一在大潮流中，巍然不动的，还是我们的大Model。<br>后端MVC也在为前后端的发展而改变。 Controller的功能更多的变成了识别是ajax请求还是普通请求， 并根据请求的不同采取相应的视图渲染方式。对于普通请求，正常渲染视图，输出HTML。 对于ajax请求，则返回局部渲染视图，输出HTML片段。有的甚至输出XML或者JSON。 唯一在大潮流中，巍然不动的，还是我们的大Model。</p>
+
+        </div>
+
+        
+          <div class="license mdui-typo">
+            <span>
+              Article License: 
+              
+                <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank">CC BY-NC-SA 4.0</a>
+              
+            </span>
+            <br />
+            <span>Article Permalink: <a href="http://zmys.tech/2017/09/10/MVC思想/">http://zmys.tech/2017/09/10/MVC思想/</a></span>
+            
+              <br />
+              <span>Article Markdown: <a href="http://zmys.tech/2017/09/10/MVC思想/MVC思想.md">http://zmys.tech/2017/09/10/MVC思想/MVC思想.md</a></span>
+            
+          </div>
+        
+
+        
+        
+          
+        
+      </div>
+      
+        <div id="card-toc" class="
+        
+          mdui-color-theme
+        
+        ">
+          <ul class="mdui-list post-toc"><a class="mdui-list-item mdui-ripple post-toc-link" href="#MVC的三要素"><span class="post-toc-number">1.<span class="post-toc-text">MVC的三要素</span></span></a></a><a class="mdui-list-item mdui-ripple post-toc-link" href="#分层次设计Model"><span class="post-toc-number">2.<span class="post-toc-text">分层次设计Model</span></span></a></a></ul>
+        </div>
+      
+    </div>
+  </div>
+  <div class="post-pagination mdui-color-theme">
+  
+    <div class="flex-spacer mdui-hidden-xs"></div>
+  
+
+  
+    <div class="next mdui-ripple mdui-color-theme mdui-valign">
+      <a href="/2017/09/10/hello-world/" class="content no-text-decoration mdui-text-right">
+        <div>
+          <span class="mdui-typo-body-2-opacity mdui-text-center">Older Post</span>
+          <i class="mdui-icon material-icons mdui-text-center">&#xe5cc;</i>
+        </div>
+        <div class="mdui-typo-title mdui-text-truncate">
+          Hello World
+        </div>
+      </a>
+    </div>
+    
+</div>
+
+  
+    <button id="button-toc" class="mdui-fab mdui-color-theme-accent mdui-ripple mdui-fab-fixed mdui-hidden-md-up" style="z-index: 9;" mdui-menu="{target: '#menu-toc', fixed: true}">
+  <i class="mdui-icon material-icons">&#xe242;</i>
+</button>
+<ul class="mdui-menu mdui-typo no-margin-bottom auto-width" id="menu-toc" style="padding: 8px;max-height: 80%">
+  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#MVC的三要素"><span class="toc-number">1.</span> <span class="toc-text">MVC的三要素</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分层次设计Model"><span class="toc-number">2.</span> <span class="toc-text">分层次设计Model</span></a></li></ol>
+</ul>
+
+
+  
+
+</div>
+
+</main>
+
+<div id="outdated" style="z-index: 9999;">
+  <h6>Your browser is out-of-date!</h6>
+  <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update my browser now </a></p>
+  <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+
+
+
+
+<!-- Import JS -->
+
+  <script>lsloader.load("outdatedbrowser_js","/js/outdatedbrowser.min.js?MmKvEvoD8lT7/fO+ebWwWA==", true)</script>
+
+
+
+    <script>lsloader.load("main_js","/js/js.min.js?8pm7SsSS86MBkm5xIeRcLg==", true)</script>
+
+
+
+
+
+  
+    <script type="text/ls-javascript" id="global-script">
+  /* appbar button */
+  (function() {
+    var drawer = document.querySelector('#drawer')
+    var drawerBtn = document.querySelector('.drawer-button')
+
+    drawer.addEventListener('open.mdui.drawer', function (e) {
+      drawerBtn.classList.add('back')
+    })
+    drawer.addEventListener('close.mdui.drawer', function (e) {
+      drawerBtn.classList.remove('back')
+    })
+  })();
+
+  
+</script>
+
+
+  <script type="text/ls-javascript" id="appbar-script">
+  /* post appbar */
+  (function() {
+    var pageFlag = false;
+    var appbar = new mdui.Headroom('#blog-appbar');
+    appbar.disable();
+    var toolbar = document.querySelector('#blog-appbar .mdui-toolbar')
+
+    window.addEventListener('scroll', function() {
+      var bodyTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
+      var divTop = document.querySelector('div#top').offsetTop
+
+      var pageLocation = divTop - bodyTop;
+      if (!pageFlag && pageLocation < 0) {
+        toolbar.classList.add('mdui-shadow-2')
+        appbar.enable();
+        pageFlag = true;
+      } else if (pageFlag && pageLocation >= 0) {
+        toolbar.classList.remove('mdui-shadow-2')
+        appbar.disable();
+        pageFlag = false;
+      }
+    })
+  })();
+</script>
+
+  <script type="text/ls-javascript" id="toc-active-script">
+  if (document.querySelector('ul#menu-toc > ol') !== null && document.querySelector('div#card-toc > ul') !== null) {
+    window.addEventListener("load", function() {
+      var timer;
+      function doWork() {
+        listens.forEach(function(value, index) {
+          value[1]();
+          value[0].classList.remove("mdui-list-item-active");
+        })
+        let actionToc = (listens[listens.reduce(function(r, v, index) {
+          if (v[2] == true) {
+            return index;
+          } else return r;
+        }, undefined)] || [])[0] || listens[0][0];
+        actionToc.classList.add("mdui-list-item-active");
+        if(actionToc.getClientRects().length == 0)return;
+        showToc(actionToc);
+      }
+
+      function showToc(toc) {
+        let offsetTop = toc.getClientRects()[0].top - cardToc.getClientRects()[0].top - 40;
+        let offsetBottom = toc.getClientRects()[0].bottom - cardToc.getClientRects()[0].bottom + 40;
+        let offset = 0;
+        if (offsetTop < 0) offset = offsetTop;
+        if (offsetBottom > 0) offset = offsetBottom;
+        var targetTop = Math.max(0, Math.min(cardToc.scrollTop + offset, toclist.offsetHeight - cardToc.offsetHeight));
+        clearInterval(timer);
+        timer = setInterval(function() {
+          var now = cardToc.scrollTop;
+          var speed = (targetTop - now) / 10;
+          speed = speed > 0 ? Math.ceil(speed) : Math.floor(speed);
+          if (Math.abs(now - targetTop) < 1) {
+            clearInterval(timer);
+          }
+          cardToc.scrollTop = now + speed;
+        }, 30);
+      }
+      var listens = [];
+      var cardToc = document.querySelector('#card-toc');
+      var links = document.querySelectorAll("a.post-toc-link");
+      var toclist = document.querySelector("#card-toc > ul");
+      Array.prototype.forEach.call(links, function(value, index) {
+        var id = (value.getAttribute("href") || "#").slice(1);
+        var element = document.getElementById(id);
+        listens.push([value, function() {
+          var readed = false;
+          var scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
+          if (element.offsetTop <= scrollTop + element.clientHeight + 64) {
+            readed = true;
+          } else {
+            readed = false;
+          }
+          listens[index][2] = readed;
+        }, false])
+      })
+      doWork();
+      window.addEventListener("scroll", doWork)
+    });
+  }
+</script>
+
+  <script type="text/ls-javascript" id="post-lg-script">
+  var images = document.querySelectorAll('#post-content img')
+  for (i = 0; i < images.length; i++) {
+    images[i].addEventListener("click", openLG);
+  }
+  function openLG() {
+    var img_src = this.getAttribute('src');
+    var img_alt = this.getAttribute('alt');
+    lightGallery(this, {
+      dynamic: true,
+      counter: false,
+      dynamicEl: [{
+        "src": img_src,
+        'subHtml': "<span author>withstars</span> • Public<div descr>" + img_alt + "</div>"
+      }],
+    });
+  }
+</script>
+
+  <!-- content warning -->
+<script type="text/ls-javascript" id="content-warning-script">
+  (function() {
+    var postLastModifiedDate = 1505046576621
+    var today = (new Date()).getTime()
+    var difference = Math.floor((today - postLastModifiedDate)/(24*60*60*1000))
+    if (difference >= 100) {
+      document.querySelector('div.warning').style.display = 'block'
+      document.querySelector('#content-warning').textContent = difference
+    }
+  })();
+</script>
+
+  
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  <script>lsloader.load("lightgallery_js","/js/lightgallery.min.js?tQptxVaCRzQ3zx70gMUYig==", true)</script>
+
+
+
+
+
+
+
+
+<!-- Custom javascript -->
+
+
+<!-- remove diplay:none -->
+<script type="text/ls-javascript" id="html-script">
+  if (document.readyState === 'complete' || document.readyState !== 'loading') {
+    showHTML();
+  } else {
+    document.addEventListener('DOMContentLoaded', showHTML);
+  }
+  function showHTML(){
+    document.querySelector('html').style.display = 'block';
+  }
+</script>
+
+<script>
+  (function(){
+    var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
+    for (var i = 0; i < scriptList.length; ++i) {
+      var item = scriptList[i];
+      lsloader.runInlineScript(item.id,item.id);
+    }
+  })()
+  /*! Copyright 2017 Halyul */
+  console.info("%cCopyright © 2017 Halyul\n"+'Theme Version: 1.4.9'+'%c\nhttps://github.com/Halyul/hexo-theme-mdui',"font-size: 14px;color: #3F51B5;","color: #448AFF;text-decoration: none");
+</script>
+
+</body>
+
+</html>
