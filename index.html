@@ -180,6 +180,41 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2 opening-statement">
                 <div class="col-md-4">
+                    <h3><a href="/2017/09/11/MySQL数据库优化/">MySQL数据库优化</a></h3>
+                    <span>
+                        <span class="post-meta">
+      <time datetime="2017-09-11T03:58:09.000Z" itemprop="datePublished">
+          2017-09-11
+      </time>
+    
+</span>
+                    </span>
+                </div>
+                <div class="col-md-8">
+                    <p>
+                      
+                        
+要尽量避免全表扫描，首先应考虑在 where 及 order by 涉及的列上建立索引。
+应尽量避免在 where 子句中对字段进行 null 值判断，否则将导致引擎放弃使用索引而进行全表扫描，如：1select id from t where num is null
+
+
+最好不要给数据库留NULL，尽可能的使用 NOT NULL填充数据库.备注、描述、评论之类的可以设置为 NULL，其他的，最好不要使用NULL。不要以为 NULL 
+                      
+                    </p>
+                    
+                    <p class="pull-right readMore">
+                        <a href="/2017/09/11/MySQL数据库优化/">Read More...</a>
+                    </p>
+                    
+                </div>
+                <div class="clearfix"></div>
+                <hr class="nogutter">
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 opening-statement">
+                <div class="col-md-4">
                     <h3><a href="/2017/09/10/MVC思想/">MVC思想</a></h3>
                     <span>
                         <span class="post-meta">
